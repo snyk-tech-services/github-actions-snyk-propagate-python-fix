@@ -1,6 +1,6 @@
-# Alpha version here ! Still be finalized
+# Alpha version here ! Still to be finalized
 
-# Github action propagating fixes injected in requirements.tx into requirement.in
+# Github action propagating fixes injected in requirements.tx into requirements.in
 
 
 ## Usage
@@ -22,7 +22,7 @@ jobs:
     steps:
     - name: Fix propagation
       id: snyk-job
-      uses: snyk-tech-services/github-actions-test1@v8
+      uses: snyk-tech-services/github-actions-snyk-propagate-python-fix@v1
       with:
         myToken: ${{ secrets.ghToken }}```
 
