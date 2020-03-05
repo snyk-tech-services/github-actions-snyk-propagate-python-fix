@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es5",                             /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "outDir": "dist",
+        "allowSyntheticDefaultImports": true,                     /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
+        "lib": ["dom", "es2015.promise","es2015.iterable", "es5"]  /* Specify library files to be included in the compilation:  */
+      },
+        "include": [
+          "."
+        ],
+        "exclude": [
+          "tests/*"
+        ]
+}

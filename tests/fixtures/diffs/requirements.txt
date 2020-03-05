@@ -1,0 +1,14 @@
+diff --git a/requirements.txt b/requirements.txt
+index 5207bc1..194b73f 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,6 +1,6 @@
+-Flask==0.10.1
++Flask==0.12.3
+ Flask-Testing==0.4.2
+ itsdangerous==0.24
+-Jinja2==2.8
++Jinja2==2.10.1
+ MarkupSafe==0.23
+-Werkzeug==0.11.9
++Werkzeug==0.11.11

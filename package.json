@@ -1,0 +1,37 @@
+{
+  "name": "Snyk-Python-Fix-Propagation-Github-Action",
+  "version": "1.0.0",
+  "description": "Propagates the Snyk Fix PR python fixes into requirements.in",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node dist/index.js",
+    "prebuild": "rm -rf dist/",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snyk-tech-services/github-actions-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snyk-tech-services/github-actions-test/issues"
+  },
+  "homepage": "https://github.com/snyk-tech-services/github-actions-test#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.2",
+    "@actions/github": "^2.1.1",
+    "axios": "^0.19.2",
+    "what-the-diff": "^0.6.0",
+    "@octokit/rest": "^16.43.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.3",
+    "jest": "^25.1.0",
+    "nock": "^12.0.2",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  }
+}

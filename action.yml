@@ -1,0 +1,19 @@
+name: 'SnykTestProject'
+description: 'Playing around'
+inputs:
+  myToken:
+    description: 'GH token'
+    required: true
+    default: ''
+  sourceFilename:
+    description: 'Name of the "source" file where Snyk fixes have been injected'
+    required: false
+    default: 'requirements.txt'
+  targetFilename:
+    description: 'Name of the "target" file where Snyk fixes will be propagated to'
+    required: false
+    default: 'requirements.in'
+outputs:
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

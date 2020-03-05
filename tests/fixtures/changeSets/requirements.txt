@@ -1,0 +1,8 @@
+[{  "path": "b/requirements.txt",
+    "changes":
+    [ "-Flask==0.10.1",
+      "+Flask==0.12.3",
+      "-Jinja2==2.8",
+      "+Jinja2==2.10.1",
+      "-Werkzeug==0.11.9",
+      "+Werkzeug==0.11.11" ] }]

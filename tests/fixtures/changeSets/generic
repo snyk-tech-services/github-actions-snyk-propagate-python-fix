@@ -1,0 +1,6 @@
+[{  "path": "b/generic",
+    "changes": 
+    [   "-removethis",
+        "+addthat",
+        "-removethattoo",
+        "+addthatinstead" ] }]

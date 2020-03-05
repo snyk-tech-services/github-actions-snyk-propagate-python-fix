@@ -1,0 +1,11 @@
+diff --git a/generic b/generic
+index 5207bc1..194b73f 100644
+--- a/generic
++++ b/generic
+@@ -1,6 +1,6 @@
+-removethis
++addthat
+ whatisit
+ itsdangerous
+-removethattoo
++addthatinstead
