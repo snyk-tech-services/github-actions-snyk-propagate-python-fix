@@ -110,19 +110,21 @@ var getChangesInFilesToAmend = function (changeSet, filesToAmend) {
 exports.getChangesInFilesToAmend = getChangesInFilesToAmend;
 function runAction() {
     return __awaiter(this, void 0, void 0, function () {
-        var ghToken, sourceFilename, targetFilename, payload, ORGANIZATION, REPO, BRANCH, DIFFURL;
+        var ghToken, sourceFilename, targetFilename, snykFixBranchPattern, payload, ORGANIZATION, REPO, BRANCH, DIFFURL;
         return __generator(this, function (_a) {
             ghToken = core.getInput('myToken');
             sourceFilename = core.getInput('sourceFilename');
             targetFilename = core.getInput('targetFilename');
+            snykFixBranchPattern = core.getInput('branchPattern');
             payload = github.context.payload;
             ORGANIZATION = payload.organization.login;
             REPO = payload.pull_request.base.repo.name;
             BRANCH = payload.pull_request.head.ref;
             DIFFURL = payload.pull_request.diff_url;
             //`https://patch-diff.githubusercontent.com/raw/mtyates/puppet_webapp/pull/3.diff`
-            console.log("running on " + BRANCH);
-            propagateSnykPythonFix(ghToken, ORGANIZATION, REPO, BRANCH, sourceFilename, targetFilename, DIFFURL);
+            if (BRANCH.startsWith(snykFixBranchPattern)) {
+                propagateSnykPythonFix(ghToken, ORGANIZATION, REPO, BRANCH, sourceFilename, targetFilename, DIFFURL);
+            }
             return [2 /*return*/];
         });
     });

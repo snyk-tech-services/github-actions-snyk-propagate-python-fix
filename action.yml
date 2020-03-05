@@ -13,6 +13,10 @@ inputs:
     description: 'Name of the "target" file where Snyk fixes will be propagated to'
     required: false
     default: 'requirements.in'
+  branchPattern:
+    description: 'Branch pattern for which this logic should kick in'
+    required: false
+    default: 'snyk-fix-'
 outputs:
 runs:
   using: 'node12'

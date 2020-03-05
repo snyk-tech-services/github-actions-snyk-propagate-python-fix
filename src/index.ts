@@ -68,7 +68,8 @@ async function runAction() {
     const ghToken = core.getInput('myToken');
     const sourceFilename = core.getInput('sourceFilename')
     const targetFilename = core.getInput('targetFilename')
-
+    const snykFixBranchPattern = core.getInput('branchPattern')
+    
     const payload = github.context.payload
   
     const ORGANIZATION = payload.organization.login
@@ -76,8 +77,10 @@ async function runAction() {
     const BRANCH = payload.pull_request.head.ref
     const DIFFURL = payload.pull_request.diff_url
     //`https://patch-diff.githubusercontent.com/raw/mtyates/puppet_webapp/pull/3.diff`
-    console.log("running on "+BRANCH)
-    propagateSnykPythonFix(ghToken,ORGANIZATION,REPO,BRANCH,sourceFilename,targetFilename,DIFFURL)
+    
+    if(BRANCH.startsWith(snykFixBranchPattern)) {    
+        propagateSnykPythonFix(ghToken,ORGANIZATION,REPO,BRANCH,sourceFilename,targetFilename,DIFFURL)
+    }
 }
 
 runAction();
