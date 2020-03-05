@@ -24,6 +24,8 @@ jobs:
       id: snyk-job
       uses: snyk-tech-services/github-actions-snyk-propagate-python-fix@v1
       with:
-        myToken: ${{ secrets.ghToken }}```
+        myToken: ${{ secrets.ghToken }}
+```
+        
 
 Once there, any newly opened PR containing requirements.txt changes will see those changes carried over to requirements.in
