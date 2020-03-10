@@ -35,9 +35,10 @@ const getChangesInFilesToAmend = (changeSet: object[], filesToAmend: string[]): 
     changeSet.forEach(changeInFile => {
         changeInFile['changes'].forEach(change => {
             if(change.startsWith("-")) {
+                
                 changesInFilesToAmend = changesInFilesToAmend.map(item => {
                     let itemArray = item as Array<string>
-                    return itemArray.map(dep => dep.replace(change.substring(1)+"\n", ""))
+                    return itemArray.map(dep => dep.replace(change.substring(1), ""))
                 })
             }
             if(change.startsWith("+")){

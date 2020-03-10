@@ -1,0 +1,6 @@
+[{  "path": "b/requirements3.txt",
+    "changes":
+    [ "-urllib3==1.24.1           # via lyft-ingest, lyft-requests, requests",
+      "-webargs==2.1.0",
+      "+urllib3==1.24.2           # via lyft-ingest, lyft-requests, requests",
+      "+webargs==5.1.3" ] }]

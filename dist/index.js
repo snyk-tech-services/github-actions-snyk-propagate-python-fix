@@ -88,7 +88,7 @@ var getChangesInFilesToAmend = function (changeSet, filesToAmend) {
             if (change.startsWith("-")) {
                 changesInFilesToAmend = changesInFilesToAmend.map(function (item) {
                     var itemArray = item;
-                    return itemArray.map(function (dep) { return dep.replace(change.substring(1) + "\n", ""); });
+                    return itemArray.map(function (dep) { return dep.replace(change.substring(1), ""); });
                 });
             }
             if (change.startsWith("+")) {
