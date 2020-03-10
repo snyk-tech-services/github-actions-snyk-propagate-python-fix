@@ -1,0 +1,6 @@
+Flask==0.12.3
+Flask-Testing
+itsdangerous
+Jinja2==2.10.1
+MarkupSafe
+Werkzeug==0.11.11

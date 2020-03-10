@@ -1,0 +1,6 @@
+Flask
+Flask-Testing
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug

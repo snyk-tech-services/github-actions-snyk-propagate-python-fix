@@ -36,4 +36,15 @@ describe('Verify the changes in files logic before commit new tree', () => {
         expect(changeInFilesToAmend).toEqual(expected);
     });
   
+
+    it('Real world scenario', () => {
+        const changeSet = JSON.parse(readFileSync(__dirname + '/fixtures/changeSets/requirements.txt','utf-8'))
+        let filesToAmend = []
+        filesToAmend.push(readFileSync(__dirname + '/fixtures/filesToAmend/requirements-real.in','utf-8'))
+
+        const changeInFilesToAmend = getChangesInFilesToAmend(changeSet, filesToAmend)
+        let expected = []
+        expected.push(readFileSync(__dirname + '/fixtures/changesInFilesToAmend/requirements-real.in','utf-8'))
+        expect(changeInFilesToAmend).toEqual(expected);
+    });
   });

@@ -31,6 +31,7 @@ const propagateSnykPythonFix = async (token: string, org: string, repo: string, 
 const getChangesInFilesToAmend = (changeSet: object[], filesToAmend: string[]): string[] => {
     let changesInFilesToAmend: string[][] = filesToAmend.map(item => item.split("\n"))
     const regex = RegExp('[=<>!~]');
+
     changeSet.forEach(changeInFile => {
         changeInFile['changes'].forEach(change => {
             if(change.startsWith("-")) {
