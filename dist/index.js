@@ -81,31 +81,37 @@ var propagateSnykPythonFix = function (token, org, repo, branch, sourceFilename,
     });
 }); };
 var getChangesInFilesToAmend = function (changeSet, filesToAmend) {
-    var changesInFilesToAmend = filesToAmend;
+    var changesInFilesToAmend = filesToAmend.map(function (item) { return item.split("\n"); });
     var regex = RegExp('[=<>!~]');
     changeSet.forEach(function (changeInFile) {
         changeInFile['changes'].forEach(function (change) {
-            if (change.startsWith("+") && changesInFilesToAmend.some(function (item) { return item.includes(change.substring(1).split(regex)[0]) && !regex.test(item); })) {
+            if (change.startsWith("-")) {
                 changesInFilesToAmend = changesInFilesToAmend.map(function (item) {
-                    item = item.replace(/(\r\n|\n|\r)/gm, "");
-                    item = item.replace(change.substring(1).split(regex)[0], "");
-                    return item;
+                    var itemArray = item;
+                    return itemArray.map(function (dep) { return dep.replace(change.substring(1) + "\n", ""); });
                 });
             }
-            if (change.startsWith("-")) {
-                changesInFilesToAmend = changesInFilesToAmend.map(function (item) { return item.replace(change.substring(1) + "\n", ""); });
-            }
-            if (change.startsWith("+") && !changesInFilesToAmend.some(function (item) { return item.includes(change.substring(1)); })) {
-                changesInFilesToAmend = changesInFilesToAmend.map(function (item) {
-                    if (!item.endsWith('\n') && item) {
-                        item = item + '\n';
+            if (change.startsWith("+")) {
+                changesInFilesToAmend = changesInFilesToAmend.map(function (item, index) {
+                    var itemArray = item;
+                    if (item.includes(change.substring(1).split(regex)[0])) {
+                        itemArray = itemArray.map(function (dep) {
+                            var dependency = dep;
+                            if (dep && change.includes(dep)) {
+                                dependency = change.substring(1);
+                            }
+                            return dependency;
+                        });
                     }
-                    return item + change.substring(1);
+                    else {
+                        itemArray.push(change.substring(1));
+                    }
+                    return itemArray;
                 });
             }
         });
     });
-    return changesInFilesToAmend;
+    return changesInFilesToAmend.map(function (item) { return item.filter(function (dep) { return dep != ""; }).join("\n"); });
 };
 exports.getChangesInFilesToAmend = getChangesInFilesToAmend;
 function runAction() {
