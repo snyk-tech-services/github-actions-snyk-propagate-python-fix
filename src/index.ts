@@ -30,32 +30,33 @@ const propagateSnykPythonFix = async (token: string, org: string, repo: string, 
 
 const getChangesInFilesToAmend = (changeSet: object[], filesToAmend: string[]): string[] => {
     let changesInFilesToAmend: string[][] = filesToAmend.map(item => item.split("\n"))
-    const regex = RegExp('[=<>!~]');
+    const regex = RegExp('[#=<>!~]');
 
     changeSet.forEach(changeInFile => {
         changeInFile['changes'].forEach(change => {
             if(change.startsWith("-")) {
-                
                 changesInFilesToAmend = changesInFilesToAmend.map(item => {
                     let itemArray = item as Array<string>
                     return itemArray.map(dep => dep.replace(change.substring(1), ""))
                 })
             }
             if(change.startsWith("+")){
-                changesInFilesToAmend = changesInFilesToAmend.map((item,index) => {
+                
+                changesInFilesToAmend = changesInFilesToAmend.map(item => {
                     let itemArray = item as Array<string>
-                    if(item.includes(change.substring(1).split(regex)[0])){
-                        itemArray = itemArray.map(dep => {
-                            let dependency = dep
-                            if(dep && change.includes(dep)){
-                                dependency = change.substring(1)
-                            }
-                            return dependency
-                        })
-                        
-                    } else {
+                    let changeInjected = false
+                    itemArray = itemArray.map(dep => {
+                        let dependency = dep
+                        if(dep.split(regex)[0] && change.substring(1).split(regex)[0].includes(dep.split(regex)[0])){
+                            dependency = change.substring(1)
+                            changeInjected = true
+                        }
+                        return dependency
+
+                    })
+                    if(!changeInjected){
                         itemArray.push(change.substring(1))
-                        
+                        changeInjected = true
                     }
                     return itemArray
                 })
@@ -65,7 +66,7 @@ const getChangesInFilesToAmend = (changeSet: object[], filesToAmend: string[]): 
         
     })
     
-    return changesInFilesToAmend.map(item => item.filter(dep => dep != "").join("\n"));
+    return changesInFilesToAmend.map(item => item.join("\n"));
 }
 
 async function runAction() {

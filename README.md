@@ -22,7 +22,7 @@ jobs:
     steps:
     - name: Fix propagation
       id: snyk-job
-      uses: snyk-tech-services/github-actions-snyk-propagate-python-fix@v5
+      uses: snyk-tech-services/github-actions-snyk-propagate-python-fix@v7
       with:
         myToken: ${{ secrets.ghToken }}
 ```
