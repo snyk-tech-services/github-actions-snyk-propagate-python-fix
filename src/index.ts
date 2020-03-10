@@ -29,35 +29,41 @@ const propagateSnykPythonFix = async (token: string, org: string, repo: string, 
 }
 
 const getChangesInFilesToAmend = (changeSet: object[], filesToAmend: string[]): string[] => {
-    let changesInFilesToAmend: string[] = filesToAmend
+    let changesInFilesToAmend: string[][] = filesToAmend.map(item => item.split("\n"))
     const regex = RegExp('[=<>!~]');
     changeSet.forEach(changeInFile => {
         changeInFile['changes'].forEach(change => {
-            if(change.startsWith("+") && changesInFilesToAmend.some(item => item.includes(change.substring(1).split(regex)[0]) && !regex.test(item))){
-                
+            if(change.startsWith("-")) {
                 changesInFilesToAmend = changesInFilesToAmend.map(item => {
-                    item = item.replace(/(\r\n|\n|\r)/gm,"")
-                    item = item.replace(change.substring(1).split(regex)[0],"")
-                    return item
+                    let itemArray = item as Array<string>
+                    return itemArray.map(dep => dep.replace(change.substring(1)+"\n", ""))
                 })
             }
-            if(change.startsWith("-")) {
-                changesInFilesToAmend = changesInFilesToAmend.map(item => item.replace(change.substring(1)+"\n", ""))
-            }
-            if(change.startsWith("+") && !changesInFilesToAmend.some(item => item.includes(change.substring(1)))){
-                changesInFilesToAmend = changesInFilesToAmend.map(item => {
-                    
-                    if(!item.endsWith('\n') && item){
-                        item = item+'\n'
+            if(change.startsWith("+")){
+                changesInFilesToAmend = changesInFilesToAmend.map((item,index) => {
+                    let itemArray = item as Array<string>
+                    if(item.includes(change.substring(1).split(regex)[0])){
+                        itemArray = itemArray.map(dep => {
+                            let dependency = dep
+                            if(dep && change.includes(dep)){
+                                dependency = change.substring(1)
+                            }
+                            return dependency
+                        })
+                        
+                    } else {
+                        itemArray.push(change.substring(1))
+                        
                     }
-                    return item+change.substring(1)
+                    return itemArray
                 })
             }
 
         })
         
     })
-    return changesInFilesToAmend;
+    
+    return changesInFilesToAmend.map(item => item.filter(dep => dep != "").join("\n"));
 }
 
 async function runAction() {
