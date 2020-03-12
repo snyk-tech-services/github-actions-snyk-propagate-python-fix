@@ -1,6 +1,7 @@
 # Alpha version here ! Still to be finalized
 
 # Github action propagating fixes injected in requirements.tx into requirements.in
+[![Known Vulnerabilities](https://snyk.io/test/github/snyk-tech-services/github-actions-snyk-propagate-python-fix/badge.svg?targetFile=package.json)](https://snyk.io/test/github/snyk-tech-services/github-actions-snyk-propagate-python-fix?targetFile=package.json)
 [![CircleCI](https://circleci.com/gh/snyk-tech-services/github-actions-snyk-propagate-python-fix.svg?style=svg)](https://circleci.com/gh/snyk-tech-services/github-actions-snyk-propagate-python-fix)
 
 ## Usage
