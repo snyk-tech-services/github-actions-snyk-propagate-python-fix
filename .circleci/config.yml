@@ -1,35 +1,57 @@
-version: 2.1
-orbs:
-  node: circleci/node@1.1.6
-
+version: 2
+jobs:
+    setup:
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - checkout
+            - run:
+                name: "Setup Snyk"
+                command: |
+                    npm install -g snyk
+    build:
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - run: npm install
+    test:
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - checkout
+            - run: npm test
+            - run:
+                name: "Snyk Test"
+                command: |
+                    snyk test --org=customer-facing-tools
+    monitor:
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - run:
+                name: "Snyk Monitor"
+                command: |
+                    snyk monitor --org=customer-facing-tools
+            - run: tsc
+    compile:
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - run: tsc
 workflows:
+    version: 2
     build-and-test:
         jobs:
-            - setup:
-                steps:
-                    - checkout
-                    - run:
-                        name: "Setup Snyk"
-                        command: |
-                            npm install -g snyk
-            - build:
-                steps:
-                    - run: npm install
+            - setup
+            - build
             - test:
-                steps:
-                    - checkout
-                    - run: npm test
-                    - run:
-                        name: "Snyk Test"
-                        command: |
-                            snyk test --org=customer-facing-tools
+                requires:
+                    - setup
+                    - build
             - monitor:
-                steps:
-                    - run:
-                        name: "Snyk Monitor"
-                        command: |
-                            snyk monitor --org=customer-facing-tools
-                    - run: tsc
+                requires:
+                    - test
             - compile:
-                steps:
-                    - run: tsc
+                requires:
+                    - build
+    
