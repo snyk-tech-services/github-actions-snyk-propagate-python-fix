@@ -1,7 +1,7 @@
 # Alpha version here ! Still to be finalized
 
 # Github action propagating fixes injected in requirements.tx into requirements.in
-
+[![CircleCI](https://circleci.com/gh/snyk-tech-services/github-actions-snyk-propagate-python-fix.svg?style=svg)](https://circleci.com/gh/snyk-tech-services/github-actions-snyk-propagate-python-fix)
 
 ## Usage
 
