@@ -1,57 +1,36 @@
 version: 2
+orbs:
+    snyk: snyk/snyk@0.0.8
 jobs:
-    setup:
+    build-test-and-monitor:
+        branches:
+            only:
+              - master
         docker:
             - image: circleci/node:10.16.3
         steps:
             - checkout
-            - run:
-                name: "Setup Snyk"
-                command: |
-                    sudo npm install -g snyk
-    build:
-        docker:
-            - image: circleci/node:10.16.3
-        steps:
             - run: npm install
-    test:
+            - run: npm test
+            - snyk/scan:
+                fail-on-issues: true
+                monitor-on-build: true
+                token-variable: SNYK_TOKEN
+            - run: npx tsc
+    build-test:
+        branches:
+            ignore:
+                - master
         docker:
             - image: circleci/node:10.16.3
         steps:
             - checkout
+            - run: npm install
             - run: npm test
-            - run:
-                name: "Snyk Test"
-                command: |
-                    snyk test --org=customer-facing-tools
-    monitor:
-        docker:
-            - image: circleci/node:10.16.3
-        steps:
-            - run:
-                name: "Snyk Monitor"
-                command: |
-                    snyk monitor --org=customer-facing-tools
-            - run: tsc
-    compile:
-        docker:
-            - image: circleci/node:10.16.3
-        steps:
+            - snyk/scan:
+                fail-on-issues: true
+                monitor-on-build: false
+                token-variable: SNYK_TOKEN
             - run: npx tsc
-workflows:
-    version: 2
-    build-and-test:
-        jobs:
-            - setup
-            - build
-            - test:
-                requires:
-                    - setup
-                    - build
-            - monitor:
-                requires:
-                    - test
-            - compile:
-                requires:
-                    - build
+
     
