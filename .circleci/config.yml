@@ -2,7 +2,7 @@ version: 2
 orbs:
     snyk: snyk/snyk@0.0.8
 jobs:
-    build-test-and-monitor:
+    build:
         branches:
             only:
               - master
@@ -17,7 +17,7 @@ jobs:
                 monitor-on-build: true
                 token-variable: SNYK_TOKEN
             - run: npx tsc
-    build-test:
+    build:
         branches:
             ignore:
                 - master
