@@ -9,6 +9,10 @@ jobs:
                 name: "Setup Snyk"
                 command: |
                     npm install -g snyk
+            - run:
+                name: "Setup Snyk"
+                command: |
+                    npm install -g snyk
     build:
         docker:
             - image: circleci/node:10.16.3
@@ -37,7 +41,7 @@ jobs:
         docker:
             - image: circleci/node:10.16.3
         steps:
-            - run: tsc
+            - run: npx tsc
 workflows:
     version: 2
     build-and-test:
