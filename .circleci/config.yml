@@ -1,35 +1,45 @@
 version: 2.1
 orbs:
-  node: circleci/node@1.1.6
+    snyk: snyk/snyk@0.0.8
+jobs:
+    build-test-monitor:
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - checkout
+            - run: npm install
+            - run: npm test
+            - snyk/scan:
+                fail-on-issues: true
+                monitor-on-build: true
+                token-variable: SNYK_TOKEN
+            - run: npx tsc
+    build-test:
+        docker:
+            - image: circleci/node:10.16.3
+        steps:
+            - checkout
+            - run: npm install
+            - run: npm test
+            - snyk/scan:
+                fail-on-issues: true
+                monitor-on-build: false
+                token-variable: SNYK_TOKEN
+            - run: npx tsc
 
 workflows:
-    build-and-test:
+    version: 2.1
+    build-test-monitor:
         jobs:
-            - setup:
-                steps:
-                    - checkout
-                    - run:
-                        name: "Setup Snyk"
-                        command: |
-                            npm install -g snyk
-            - build:
-                steps:
-                    - run: npm install
-            - test:
-                steps:
-                    - checkout
-                    - run: npm test
-                    - run:
-                        name: "Snyk Test"
-                        command: |
-                            snyk test --org=customer-facing-tools
-            - monitor:
-                steps:
-                    - run:
-                        name: "Snyk Monitor"
-                        command: |
-                            snyk monitor --org=customer-facing-tools
-                    - run: tsc
-            - compile:
-                steps:
-                    - run: tsc
+            - build-test-monitor:
+                filters:
+                    branches:
+                        only:
+                            - master
+    build-test:
+        jobs:
+            - build-test:
+                filters:
+                    branches:
+                        ignore:
+                            - master
