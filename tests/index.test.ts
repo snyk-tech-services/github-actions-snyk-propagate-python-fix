@@ -1,7 +1,17 @@
 import {getChangesInFilesToAmend} from '../src/index'
 import fs, { readFileSync } from 'fs'
+import * as Snyk from '../src/snyk'
+import nock from "nock"
 
-describe('Verify the changes in files logic before commit new tree', () => {
+beforeEach(() => {
+    return nock('https://fixtures.snyk.io')
+    .get(/.*/)
+    .reply(200, function(uri, requestBody) {
+      return fs.createReadStream( __dirname + '/fixtures/'+uri);//diffs/requirements.txt');      
+    });
+  });
+
+describe('Verify the changes .in files logic before commit new tree', () => {
    
     it('Extract and consolidate changes correctly', () => {
         const changeSet = JSON.parse(readFileSync(__dirname + '/fixtures/changeSets/requirements.txt','utf-8'))
@@ -48,7 +58,7 @@ describe('Verify the changes in files logic before commit new tree', () => {
         expect(changeInFilesToAmend).toEqual(expected);
     });
 
-    it('Real world scenario in requirements3.txt', () => {
+    it('Real world scenario in requirements3.txt', async () => {
         const changeSet = JSON.parse(readFileSync(__dirname + '/fixtures/changeSets/requirements3.txt','utf-8'))
         let filesToAmend = []
         filesToAmend.push(readFileSync(__dirname + '/fixtures/filesToAmend/requirements3.in','utf-8'))

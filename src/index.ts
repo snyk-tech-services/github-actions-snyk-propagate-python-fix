@@ -47,7 +47,7 @@ const getChangesInFilesToAmend = (changeSet: object[], filesToAmend: string[]): 
                     let changeInjected = false
                     itemArray = itemArray.map(dep => {
                         let dependency = dep
-                        if(dep.split(regex)[0] && change.substring(1).split(regex)[0].includes(dep.split(regex)[0])){
+                        if(dep.split(regex)[0] && change.toLowerCase().substring(1).split(regex)[0].includes(dep.toLowerCase().split(regex)[0])){
                             dependency = change.substring(1)
                             changeInjected = true
                         }
@@ -74,21 +74,25 @@ async function runAction() {
     // The YML workflow will need to set myToken with the GitHub Secret Token
     // myToken: ${{ secrets.GITHUB_TOKEN }}
     // https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
-    const ghToken = core.getInput('myToken');
-    const sourceFilename = core.getInput('sourceFilename')
-    const targetFilename = core.getInput('targetFilename')
-    const snykFixBranchPattern = core.getInput('branchPattern')
+    try{
+        const ghToken = core.getInput('myToken');
+        const sourceFilename = core.getInput('sourceFilename')
+        const targetFilename = core.getInput('targetFilename')
+        const snykFixBranchPattern = core.getInput('branchPattern')
+        
+        const payload = github.context.payload
     
-    const payload = github.context.payload
-  
-    const ORGANIZATION = payload.organization.login
-    const REPO = payload.pull_request.base.repo.name
-    const BRANCH = payload.pull_request.head.ref
-    const DIFFURL = payload.pull_request.diff_url
-    //`https://patch-diff.githubusercontent.com/raw/mtyates/puppet_webapp/pull/3.diff`
-    
-    if(BRANCH.startsWith(snykFixBranchPattern)) {    
-        propagateSnykPythonFix(ghToken,ORGANIZATION,REPO,BRANCH,sourceFilename,targetFilename,DIFFURL)
+        const ORGANIZATION = payload.organization.login
+        const REPO = payload.pull_request.base.repo.name
+        const BRANCH = payload.pull_request.head.ref
+        const DIFFURL = payload.pull_request.diff_url
+        //`https://patch-diff.githubusercontent.com/raw/mtyates/puppet_webapp/pull/3.diff`
+        
+        if(BRANCH.startsWith(snykFixBranchPattern)) {    
+            propagateSnykPythonFix(ghToken,ORGANIZATION,REPO,BRANCH,sourceFilename,targetFilename,DIFFURL)
+        }
+    } catch(err) {
+        console.log(err)
     }
 }
 

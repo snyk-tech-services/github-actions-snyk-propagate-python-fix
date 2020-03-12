@@ -11,7 +11,11 @@ const getSnykFixes = async (diff_url, targetFileName) => {
     let changes = [];
     data.forEach(element => {
         if (element.newPath.includes(targetFileName)) {
-            changes.push({ path: element.newPath, changes: element.hunks[0].lines.filter(change => change.startsWith("+") || change.startsWith("-")) });
+            let changeHunksConsolidated = [];
+            for (let i = 0; i < element.hunks.length; i++) {
+                changeHunksConsolidated = changeHunksConsolidated.concat(element.hunks[i].lines.filter(change => change.startsWith("+") || change.startsWith("-")));
+            }
+            changes.push({ path: element.newPath, changes: changeHunksConsolidated });
         }
     });
     return changes;
