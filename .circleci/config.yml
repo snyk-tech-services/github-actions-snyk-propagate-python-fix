@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 orbs:
     snyk: snyk/snyk@0.0.8
 jobs:
@@ -15,7 +15,6 @@ jobs:
                 token-variable: SNYK_TOKEN
             - run: npx tsc
     build-test:
-
         docker:
             - image: circleci/node:10.16.3
         steps:
@@ -28,7 +27,7 @@ jobs:
                 token-variable: SNYK_TOKEN
             - run: npx tsc
 workflows:
-    version: 2
+    version: 2.1
     build-test-monitor:
         jobs:
             - build-test-monitor:
