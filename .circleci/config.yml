@@ -8,11 +8,7 @@ jobs:
             - run:
                 name: "Setup Snyk"
                 command: |
-                    npm install -g snyk
-            - run:
-                name: "Setup Snyk"
-                command: |
-                    npm install -g snyk
+                    sudo npm install -g snyk
     build:
         docker:
             - image: circleci/node:10.16.3
