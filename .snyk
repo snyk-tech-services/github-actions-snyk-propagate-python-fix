@@ -5,8 +5,8 @@ ignore:
   SNYK-JS-LODASHSET-1320032:
     - '@octokit/rest > lodash.set':
         reason: no upgrade available
-        expires: '2022-01-29T11:54:16.639Z'
+        expires: '2022-03-26T10:34:36.955Z'
     - '@actions/github > @octokit/rest > lodash.set':
         reason: no upgrade available
-        expires: '2022-01-29T11:54:16.640Z'
+        expires: '2022-03-26T10:34:36.955Z'
 patch: {}
